@@ -1,0 +1,58 @@
+// Aguarda o carregamento estrutural completo do DOM
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // Inicialização e Armazenamento de Elementos nas Variáveis
+    const themeToggleBtn = document.getElementById('theme-toggle');
+    const actionBtn = document.getElementById('btn-action');
+    const nameInput = document.getElementById('user-name');
+    const mainTitle = document.getElementById('main-title');
+    const subTitle = document.getElementById('sub-title');
+    const inputWrapper = document.getElementById('input-wrapper');
+
+    // 1. Função de Gerenciamento de Tema (Modo Escuro/Claro)
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            // Alterna a classe controladora no body
+            document.body.classList.toggle('dark-mode');
+            
+            // Valida o estado atual para atualizar o texto do botão de forma funcional
+            const isDarkModeActive = document.body.classList.contains('dark-mode');
+            themeToggleBtn.textContent = isDarkModeActive ? "☀️ Modo Claro" : "🌓 Modo Escuro";
+            
+            // Log informativo de depuração sem erros no console
+            console.log(`Interface atualizada para: ${isDarkModeActive ? 'Dark' : 'Light'} Mode.`);
+        });
+    }
+
+    // 2. Função de Processamento de Dados e Manipulação de DOM Dinâmica
+    if (actionBtn) {
+        actionBtn.addEventListener('click', () => {
+            // Armazena e limpa o espaço em branco da informação digitada
+            const visitorName = nameInput.value.trim();
+
+            if (visitorName !== "") {
+                // Altera dinamicamente os textos da tela com efeitos personalizados
+                mainTitle.innerHTML = `Bem-vindo à Revolução Verde, <span style="color: var(--accent-color); font-weight:800;">${visitorName}</span>!`;
+                subTitle.textContent = "Seu perfil foi conectado com sucesso às diretrizes do Agrinho para um ecossistema produtivo sustentável.";
+                
+                // Modifica o DOM escondendo o container de input com suavidade visual
+                inputWrapper.style.opacity = "0";
+                setTimeout(() => {
+                    inputWrapper.innerHTML = `<p style="color: var(--accent-color); font-weight: 700; font-size: 1.1rem; width:100%; text-align:center;">🌿 Diagnóstico Ativado! Explore os cards abaixo para entender as ações.</p>`;
+                    inputWrapper.style.opacity = "1";
+                    inputWrapper.style.transition = "opacity 0.4s ease";
+                }, 300);
+
+            } else {
+                // Tratamento preventivo de validação de formulário
+                nameInput.style.borderColor = "#ff4d4d";
+                nameInput.placeholder = "Por favor, insira um nome válido...";
+                
+                // Retorna a cor normal após pequena interação do usuário
+                nameInput.addEventListener('input', () => {
+                    nameInput.style.borderColor = "var(--card-border)";
+                }, { once: true });
+            }
+        });
+    }
+});
